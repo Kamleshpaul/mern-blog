@@ -1,8 +1,7 @@
-import mongoose, { Document, Schema } from 'mongoose'
+import mongoose, { Document, InferSchemaType, Schema } from 'mongoose'
 import bcrypt from 'bcrypt'
-import { IUser } from '#/types/user.type';
 
-const userSchema = new Schema<IUser>({
+const userSchema = new Schema({
   name: {
     type: String,
     required: true
@@ -28,5 +27,6 @@ userSchema.pre<IUser & Document>('save', async function (next) {
   next();
 });
 
+type IUser = InferSchemaType<typeof userSchema>;
 
 export const User = mongoose.model<IUser>('users', userSchema);
