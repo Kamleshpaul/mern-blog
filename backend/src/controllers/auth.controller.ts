@@ -4,12 +4,11 @@ import { Request, Response } from "express";
 import bcrypt from 'bcrypt'
 import { User } from "#/models/user.model";
 import jwt from "jsonwebtoken";
-import { JWT_KEY, TOKEN_KEY } from "#/config";
 import { IRequest } from "#/types/app.type";
 
 export const login = TryCatch(async (req: Request<{}, {}, IloginPayload>, res: Response) => {
 
-  const tokenExist = req.cookies[TOKEN_KEY]
+  const tokenExist = req.cookies[process.env.TOKEN_KEY]
   if (tokenExist) {
     return res.status(400).json({ status: false, message: "Already logged in" })
   }
@@ -23,9 +22,9 @@ export const login = TryCatch(async (req: Request<{}, {}, IloginPayload>, res: R
     return res.status(400).json({ status: false, message: "Invalid credentials" });
   }
 
-  const token = jwt.sign({ _id: user.id }, JWT_KEY);
+  const token = jwt.sign({ _id: user.id }, process.env.JWT_KEY);
 
-  res.cookie(TOKEN_KEY,
+  res.cookie(process.env.TOKEN_KEY,
     token, {
     maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
     httpOnly: true
