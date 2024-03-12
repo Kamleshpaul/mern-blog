@@ -30,7 +30,12 @@ const blogSchema = new Schema({
   comments: [
     {
       body: String,
-      date: Date
+      date: Date,
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "users",
+        required: true
+      },
     }
   ],
   status: {
