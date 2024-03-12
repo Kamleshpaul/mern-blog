@@ -28,7 +28,7 @@ Blogs
   - likes
   - comments
   - status
-  - creator -> ref(Users)
+  - author -> ref(Users)
   - category -> ref(Categories)
   - publishAt
   - createdAt
