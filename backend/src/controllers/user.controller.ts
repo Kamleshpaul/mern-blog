@@ -49,8 +49,7 @@ export const deleteOneUser = TryCatch(async (req: Request<{ id: Schema.Types.Obj
   } else {
     res.status(500).json({
       status: false,
-      data: user,
-      message: "Somthing went wrong."
+      message: "Something went wrong."
     })
   }
 
