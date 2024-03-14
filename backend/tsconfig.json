@@ -11,11 +11,21 @@
     "skipLibCheck": true,
     "baseUrl": "./",
     "paths": {
-      "#/*": ["src/*"]
+      "#/*": [
+        "src/*"
+      ]
     }
   },
-  "include": ["./*.js", "./**/*.ts"],
+  "include": [
+    "./*.js",
+    "./**/*.ts"
+  ],
   "ts-node": {
-    "require": ["tsconfig-paths/register"]
-  }
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  },
+  "types": [
+    "@types/jest"
+  ]
 }
