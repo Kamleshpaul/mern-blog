@@ -15,7 +15,7 @@ export const getAllUsers = TryCatch(async (req: Request, res: Response) => {
 
 export const createUser = TryCatch(async (req: Request, res: Response) => {
   const result = await User.create(req.body);
-  res.json({
+  return res.status(201).json({
     status: true,
     data: result,
     message: "User Created."

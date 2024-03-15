@@ -27,6 +27,6 @@ userSchema.pre<IUser & Document>('save', async function (next) {
   next();
 });
 
-type IUser = InferSchemaType<typeof userSchema>;
+export type IUser = InferSchemaType<typeof userSchema>;
 
 export const User = mongoose.model<IUser>('users', userSchema);
