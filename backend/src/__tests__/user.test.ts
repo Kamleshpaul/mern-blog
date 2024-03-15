@@ -2,8 +2,10 @@ import createApp from "#/createApp"
 import request from 'supertest'
 import { cookie } from "./config/jest.setup";
 import { faker } from "@faker-js/faker";
+import { User } from "#/models/user.model";
 
 const app = createApp();
+let userId: string;
 
 describe('user create api', () => {
 
@@ -24,6 +26,7 @@ describe('user create api', () => {
       .expect(201)
       .then((data) => {
 
+        userId = data.body.data._id
         expect(data.body.message).toBe('User Created.')
         expect(data.body).toHaveProperty('status')
         expect(data.body).toHaveProperty('data')
@@ -95,5 +98,44 @@ describe('user create api', () => {
         done()
       })
   })
+
+
+  it('should return users collections', (done) => {
+    request(app)
+      .get('/api/users')
+      .set('Cookie', cookie)
+      .expect(200)
+      .then((data) => {
+        expect(data.body.data.length).toBe(2)
+        done()
+      })
+  })
+
+  it('should return single user', (done) => {
+
+    request(app)
+      .get(`/api/users/${userId}`)
+      .set('Cookie', cookie)
+      .expect(200)
+      .then((data) => {
+        expect(Object.keys(data.body.data).length).toBe(5)
+        done()
+      })
+  })
+
+  it('should delete  single user', (done) => {
+
+    request(app)
+      .delete(`/api/users/${userId}`)
+      .set('Cookie', cookie)
+      .expect(200)
+      .then(async (data) => {
+        const count = await User.find().countDocuments();
+        expect(data.body.message).toBe('User Deleted.');
+        expect(count).toBe(1)
+        done()
+      })
+  })
+
 
 })
