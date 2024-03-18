@@ -1,5 +1,4 @@
-import mongoose, { Document, InferSchemaType, Schema } from 'mongoose'
-import bcrypt from 'bcrypt'
+import mongoose, { InferSchemaType, Schema } from 'mongoose'
 
 const categorySchema = new Schema({
   name: {
@@ -12,6 +11,8 @@ const categorySchema = new Schema({
 
 
 
-type ICategory = InferSchemaType<typeof categorySchema>;
+export type ICategory = InferSchemaType<typeof categorySchema> & {
+  _id: Schema.Types.ObjectId
+};;
 
 export const Category = mongoose.model<ICategory>('categories', categorySchema);

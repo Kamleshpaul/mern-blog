@@ -61,6 +61,8 @@ const blogSchema = new Schema({
 });
 
 
-type IBlog = InferSchemaType<typeof blogSchema>;
+type IBlog = InferSchemaType<typeof blogSchema> & {
+  _id: Schema.Types.ObjectId
+};;
 
 export const Blog = mongoose.model<IBlog>('blogs', blogSchema);

@@ -1,7 +1,6 @@
 import createApp from "#/createApp"
 import request from 'supertest'
 import { cookie } from "./config/jest.setup";
-import { faker } from "@faker-js/faker";
 import { Category } from "#/models/category.model";
 
 const app = createApp();

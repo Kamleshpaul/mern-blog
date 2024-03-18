@@ -19,7 +19,7 @@ export const getAllBlogs = TryCatch(async (req: Request, res: Response) => {
 export const createBlog = TryCatch(async (req: Request, res: Response) => {
 
   const result = await Blog.create(req.body);
-  res.json({
+  return res.status(201).json({
     status: true,
     data: result,
     message: "Blog Created."
