@@ -15,7 +15,7 @@ export const getAllCategory = TryCatch(async (req: Request, res: Response) => {
 
 export const createCategories = TryCatch(async (req: Request, res: Response) => {
   const result = await Category.create(req.body);
-  res.json({
+  return res.status(201).json({
     status: true,
     data: result,
     message: "Category Created."
