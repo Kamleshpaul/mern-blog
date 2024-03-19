@@ -1,8 +1,9 @@
+
 function App() {
 
   return (
     <>
-      Blog
+      <div className="bg-red-500">works</div>
     </>
   )
 }
