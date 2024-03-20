@@ -2,13 +2,11 @@ import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { BellIcon, CircleEllipsisIcon, HeartIcon, LayersIcon, SearchIcon, TextIcon, UserCircleIcon } from "lucide-react"
+import { CircleEllipsisIcon, HeartIcon, LayersIcon, TextIcon } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { ClassAttributes, HTMLAttributes } from "react"
 import { JSX } from "react/jsx-runtime"
