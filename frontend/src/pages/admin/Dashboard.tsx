@@ -28,12 +28,12 @@ export default function Dashboard() {
       </div>
 
 
-      <section className="grid grid-cols-4 gap-6 mb-6">
+      <section className="grid grid-cols-1 gap-6 mb-6 md:grid-cols-4">
 
 
         <Card className="flex items-center bg-blue-200/50">
 
-          <CardContent className="w-full">
+          <CardContent className="w-full p-6">
             <Avatar>
               <AvatarImage alt="Henry Qells" src="/placeholder." />
               <AvatarFallback>HQ</AvatarFallback>
@@ -56,7 +56,7 @@ export default function Dashboard() {
         </Card>
 
 
-        <div className="grid grid-cols-3 col-span-3 gap-6">
+        <div className="grid grid-cols-1 col-span-3 gap-6 md:grid-cols-3">
 
           <Card className="bg-blue-200/50">
             <CardContent className="p-6">
@@ -93,7 +93,7 @@ export default function Dashboard() {
       </section>
 
 
-      <section className="grid grid-cols-3 gap-6 mb-6">
+      <section className="grid grid-cols-1 gap-3 mb-3 md:grid-cols-3 md:gap-6 md:mb-6">
         <div className="col-span-2">
           <Card className="bg-blue-200/50">
             <CardHeader>
