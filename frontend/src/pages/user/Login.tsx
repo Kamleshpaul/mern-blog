@@ -6,12 +6,14 @@ import { Link, useNavigate } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form"
 import loginValidator, { ILoginPayload } from "@/validations/LoginValidator"
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useLoginMutation } from "@/redux/api"
 
 
 export default function Login() {
 
   const navigation = useNavigate();
 
+  const [login, { error }] = useLoginMutation();
   const {
     register,
     handleSubmit,
@@ -20,8 +22,17 @@ export default function Login() {
     resolver: zodResolver(loginValidator)
   })
 
-  const onSubmit: SubmitHandler<ILoginPayload> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<ILoginPayload> = async (data) => {
+    try {
+      const result = await login(data)
+
+      console.log({ result, error, });
+
+    } catch (error) {
+      console.log({ error });
+
+    }
+
     // navigation('/admin');
   }
   return (

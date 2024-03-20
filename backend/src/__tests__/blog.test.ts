@@ -57,8 +57,8 @@ describe('blog create api', () => {
       .set('Cookie', cookie)
       .expect(422)
       .then(({ body }) => {
-        expect(body.length).toBe(6)
-        expect(body.map((x: any) => x.path[0]).sort()).toEqual([
+        expect(body.errors.length).toBe(6)
+        expect(body.errors.map((x: any) => x.path[0]).sort()).toEqual([
           "title",
           "image",
           "slug",

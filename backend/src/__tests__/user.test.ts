@@ -49,8 +49,8 @@ describe('user create api', () => {
       .expect(422)
       .then((data) => {
 
-        expect(data.body.length).toBe(3)
-        expect(data.body.map((x: any) => x.path[0]).sort()).toEqual([
+        expect(data.body.errors.length).toBe(3)
+        expect(data.body.errors.map((x: any) => x.path[0]).sort()).toEqual([
           "name",
           "email",
           "password"
@@ -73,8 +73,8 @@ describe('user create api', () => {
       })
       .expect(422)
       .then((data) => {
-        expect(data.body.length).toBe(1)
-        expect(data.body[0].message).toBe('String must contain at least 1 character(s)')
+        expect(data.body.errors.length).toBe(1)
+        expect(data.body.errors[0].message).toBe('String must contain at least 1 character(s)')
         done()
       })
   })
@@ -93,8 +93,8 @@ describe('user create api', () => {
       })
       .expect(422)
       .then((data) => {
-        expect(data.body.length).toBe(1)
-        expect(data.body[0].message).toBe('already exist!')
+        expect(data.body.errors.length).toBe(1)
+        expect(data.body.errors[0].message).toBe('already exist!')
         done()
       })
   })

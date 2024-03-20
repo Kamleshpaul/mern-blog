@@ -3,18 +3,26 @@ import express, { Response, Request } from "express";
 import '#/types/env.type';
 import { errorHandler, notFound } from "#/middlewares/app.middleware";
 import cookieParser from "cookie-parser"
+import cors from 'cors'
 
 
 import authRoutes from "#/routes/auth.route";
 import userRoutes from "#/routes/user.route";
 import categoryRoutes from "#/routes/category.route";
 import blogRoutes from "#/routes/blog.route";
+import helmet from "helmet";
 
 
 const createApp = () => {
   const app = express();
+
+  // app.use(helmet());
   app.use(cookieParser())
   app.use(express.json());
+  app.use(cors({
+    origin: "*",
+    methods: "*"
+  }))
 
 
   app.get("/", (req: Request, res: Response) => {

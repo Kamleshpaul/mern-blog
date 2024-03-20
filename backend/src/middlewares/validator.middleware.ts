@@ -28,9 +28,10 @@ export const reqValidate = (validators: RequestValidators) => {
     } catch (error) {
 
       if (error instanceof ZodError) {
-        res.status(422);
-        res.json(error.errors);
-        return;
+        return res.status(422).json({
+          status: false,
+          errors: error.errors
+        });
       }
 
       next(error);
