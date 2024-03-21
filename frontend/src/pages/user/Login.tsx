@@ -7,16 +7,20 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import loginValidator, { ILoginPayload } from "@/validations/LoginValidator"
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLoginMutation } from "@/redux/api"
+import { isServerError, isServerValidationError } from "@/lib/utils"
+import { ServerError, ServerValidationErrors } from "@/types/errors"
 
 
 export default function Login() {
 
   const navigation = useNavigate();
 
-  const [login, { error }] = useLoginMutation();
+  const [login] = useLoginMutation();
   const {
     register,
     handleSubmit,
+    setError,
+
     formState: { errors },
   } = useForm<ILoginPayload>({
     resolver: zodResolver(loginValidator)
@@ -24,17 +28,26 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<ILoginPayload> = async (data) => {
     try {
-      const result = await login(data)
+      await login(data)
+        .unwrap()
+    } catch (error: unknown) {
 
-      console.log({ result, error, });
+      if (isServerValidationError(error)) {
+        const fetchError = error as ServerValidationErrors;
+        const errors = fetchError.data.errors;
+        setError('email', errors.filter(x => x.path.includes('email'))[0])
+        setError('password', errors.filter(x => x.path.includes('password'))[0])
+      }
 
-    } catch (error) {
-      console.log({ error });
+      if (isServerError(error)) {
+        const fetchError = error.data as ServerError;
+        console.log(fetchError.message);
 
+      }
     }
 
-    // navigation('/admin');
   }
+
   return (
     <div className="flex items-center justify-center w-screen h-screen">
 
@@ -52,7 +65,6 @@ export default function Login() {
                 <Label htmlFor="email">Email</Label>
                 <Input id="email" placeholder="user@example.com" {...register('email', { required: true })} />
                 {errors.email && <span className="text-red-500">{errors.email.message}</span>}
-
               </div>
               <div className="space-y-2">
                 <div className="flex items-center">
@@ -64,8 +76,7 @@ export default function Login() {
 
                 </div>
                 <Input id="password" type="password" {...register('password', { required: true })} />
-                {errors.password && <span className="text-red-500">This field is required</span>}
-
+                {errors.password && <span className="text-red-500">{errors.password.message}</span>}
               </div>
 
               <Button className="w-full" type="submit">
@@ -89,4 +100,5 @@ export default function Login() {
     </div>
   )
 }
+
 

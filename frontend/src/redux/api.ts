@@ -1,30 +1,61 @@
 import { ILoginPayload } from '@/validations/LoginValidator'
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { RootState } from './store'
+import { createApi } from '@reduxjs/toolkit/query/react'
+import type { AxiosRequestConfig, AxiosError } from 'axios'
+import type { BaseQueryFn } from '@reduxjs/toolkit/query'
+import axios from 'axios'
+
+
+const axiosBaseQuery =
+  (
+    { baseUrl }: { baseUrl: string } = { baseUrl: '' }
+  ): BaseQueryFn<
+    {
+      url: string
+      method?: AxiosRequestConfig['method']
+      data?: AxiosRequestConfig['data']
+      params?: AxiosRequestConfig['params']
+      headers?: AxiosRequestConfig['headers']
+    },
+    unknown,
+    unknown
+  > =>
+    async ({ url, method, data, params, headers }) => {
+      try {
+        console.log({ url, method, data, params, headers });
+
+        const result = await axios({
+          url: baseUrl + url,
+          method,
+          data,
+          params,
+          headers: {
+            ...headers,
+            "content-type": "application/json"
+          },
+        })
+        return { data: result.data }
+      } catch (axiosError) {
+        const err = axiosError as AxiosError
+        return {
+          error: {
+            status: err.response?.status,
+            data: err.response?.data || err.message,
+          },
+        }
+      }
+    }
 
 export const api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:4000/api/',
-    prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).user?.token
-      if (token) {
-        headers.set("authorization", `Bearer ${token}`)
-      }
-      return headers
-    },
-    credentials: "same-origin",
-    mode: "no-cors",
-    headers: {
-      "Content-Type": "application/json",
-    }
+  baseQuery: axiosBaseQuery({
+    baseUrl: 'http://localhost:4000/api',
   }),
   endpoints: (builder) => ({
     login: builder.mutation({
-      query: (body: ILoginPayload) => ({
+      query: (data: ILoginPayload) => ({
         url: "/auth/login",
         method: "post",
-        body
+        body: data
       }),
       // invalidatesTags: ["User"],
     }),
