@@ -45,6 +45,5 @@ export const auth = async (req: IRequest, res: Response, next: NextFunction) => 
       message: "Unauthorized"
     })
   }
-
   next();
 }

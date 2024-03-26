@@ -219,6 +219,7 @@ function LineChart(props: JSX.IntrinsicAttributes & ClassAttributes<HTMLDivEleme
           },
         }}
         role="application"
+        enablePointLabel={true}
       />
     </div>
   )

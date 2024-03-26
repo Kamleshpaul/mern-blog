@@ -16,19 +16,21 @@ const initialState: userState = {
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-
-  },
+  reducers: {},
   extraReducers: (builder) => {
+
     builder.addMatcher(
       api.endpoints.login.matchFulfilled,
       (state, { payload }) => {
-        console.log({ payload });
-
         state.user = payload.user
-
-        throw Error("Example error in addMatcher")
       },
+    )
+
+    builder.addMatcher(
+      api.endpoints.logout.matchFulfilled,
+      (state) => {
+        state.user = undefined
+      }
     )
   },
 })

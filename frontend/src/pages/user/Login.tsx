@@ -9,13 +9,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useLoginMutation } from "@/redux/api"
 import { isServerError, isServerValidationError } from "@/lib/utils"
 import { ServerError, ServerValidationErrors } from "@/types/errors"
+import { useToast } from "@/components/ui/use-toast"
 
 
 export default function Login() {
 
-  const navigation = useNavigate();
+  const navigate = useNavigate();
+  const { toast } = useToast()
 
   const [login] = useLoginMutation();
+
   const {
     register,
     handleSubmit,
@@ -30,6 +33,8 @@ export default function Login() {
     try {
       await login(data)
         .unwrap()
+      navigate('/admin')
+
     } catch (error: unknown) {
 
       if (isServerValidationError(error)) {
@@ -37,12 +42,16 @@ export default function Login() {
         const errors = fetchError.data.errors;
         setError('email', errors.filter(x => x.path.includes('email'))[0])
         setError('password', errors.filter(x => x.path.includes('password'))[0])
+        return;
       }
 
       if (isServerError(error)) {
         const fetchError = error.data as ServerError;
-        console.log(fetchError.message);
-
+        toast({
+          title: fetchError.message,
+          variant: 'destructive'
+        })
+        return;
       }
     }
 

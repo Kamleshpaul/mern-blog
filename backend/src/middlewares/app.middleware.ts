@@ -13,8 +13,8 @@ export const errorHandler = (error: Error, req: Request, res: Response, next: Ne
 
   }
 
-  const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
-  res.status(statusCode);
+  console.error(error);
+  res.status(res.statusCode);
   res.json({
     message: error.message,
     stack: process.env.APP_ENV === 'production' ? '' : error.stack,

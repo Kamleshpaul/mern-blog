@@ -3,6 +3,7 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 import type { AxiosRequestConfig, AxiosError } from 'axios'
 import type { BaseQueryFn } from '@reduxjs/toolkit/query'
 import axios from 'axios'
+import { toast } from '@/components/ui/use-toast'
 
 
 const axiosBaseQuery =
@@ -21,8 +22,6 @@ const axiosBaseQuery =
   > =>
     async ({ url, method, data, params, headers }) => {
       try {
-        console.log({ url, method, data, params, headers });
-
         const result = await axios({
           url: baseUrl + url,
           method,
@@ -30,12 +29,21 @@ const axiosBaseQuery =
           params,
           headers: {
             ...headers,
-            "content-type": "application/json"
+            "content-type": "application/json",
           },
+          withCredentials: true
         })
         return { data: result.data }
       } catch (axiosError) {
         const err = axiosError as AxiosError
+
+        if (err.code === "ERR_NETWORK") {
+          toast({
+            title: err.message,
+            variant: 'destructive'
+          })
+        }
+
         return {
           error: {
             status: err.response?.status,
@@ -50,16 +58,39 @@ export const api = createApi({
   baseQuery: axiosBaseQuery({
     baseUrl: 'http://localhost:4000/api',
   }),
+  tagTypes: ['User'],
   endpoints: (builder) => ({
+
+
+    authUser: builder.query({
+      query: () => ({ url: '/auth/me' }),
+      providesTags: ['User']
+    }),
+
     login: builder.mutation({
       query: (data: ILoginPayload) => ({
         url: "/auth/login",
         method: "post",
-        body: data
+        data
       }),
-      // invalidatesTags: ["User"],
+      invalidatesTags: ["User"],
     }),
+
+
+    logout: builder.mutation({
+      query: () => ({
+        url: "/auth/logout",
+        method: "post",
+        data: {},
+      }),
+      invalidatesTags: ["User"],
+    }),
+
   })
 })
 
-export const { useLoginMutation } = api
+export const {
+  useLoginMutation,
+  useAuthUserQuery,
+  useLogoutMutation
+} = api

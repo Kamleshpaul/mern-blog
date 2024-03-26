@@ -50,7 +50,7 @@ export const getAuthUser = TryCatch(async (req: IRequest, res: Response) => {
 
 export const logout = TryCatch(async (req: Request, res: Response) => {
 
-  res.clearCookie(process.env.TOKEN_KEY)
+  return res.clearCookie(process.env.TOKEN_KEY)
     .json({
       status: true,
       message: "logout successfully.",

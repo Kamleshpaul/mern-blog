@@ -2,6 +2,7 @@ import Login from "@/pages/user/Login";
 import App from "../App";
 import Error from "@/pages/user/Error";
 import Register from "@/pages/user/Register";
+import GuestLayout from "@/components/layouts/GuestLayout";
 
 const webRouter = [
   {
@@ -10,13 +11,19 @@ const webRouter = [
     errorElement: <Error />
   },
   {
-    path: "/login",
-    element: <Login />
+    element: <GuestLayout />,
+    children: [
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />
+      }
+    ]
   },
-  {
-    path: "/register",
-    element: <Register />
-  }
+
 ];
 
 
