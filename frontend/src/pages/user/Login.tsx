@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form"
 import loginValidator, { ILoginPayload } from "@/validations/LoginValidator"
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useLoginMutation } from "@/redux/api"
+import { useLoginMutation } from "@/redux/apis/userApi"
 import { isServerError, isServerValidationError } from "@/lib/utils"
 import { ServerError, ServerValidationErrors } from "@/types/errors"
 import { useToast } from "@/components/ui/use-toast"

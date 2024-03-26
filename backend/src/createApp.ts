@@ -21,7 +21,7 @@ const createApp = () => {
   app.use(express.json());
   app.use(cors({
     origin: [
-      /^http:\/\/localhost(:\d+)?$/,
+      process.env.APP_ENV === "local" ? /^http:\/\/localhost(:\d+)?$/ : '', // all localhost
     ],
     credentials: true
   }))

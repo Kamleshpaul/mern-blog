@@ -1,4 +1,4 @@
-import { useAuthUserQuery } from "@/redux/api";
+import { useAuthUserQuery } from "@/redux/apis/userApi";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 

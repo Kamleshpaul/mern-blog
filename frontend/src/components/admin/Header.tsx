@@ -6,7 +6,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLab
 import { isServerError } from "@/lib/utils";
 import { toast } from "../ui/use-toast";
 import { ServerError } from "@/types/errors";
-import { useLogoutMutation } from "@/redux/api";
+import { useLogoutMutation } from "@/redux/apis/userApi";
 
 export default function Header() {
 

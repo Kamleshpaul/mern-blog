@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { api } from './api'
+import { userApi } from '../apis/userApi'
 
 export interface userState {
   user?: {
@@ -20,21 +20,18 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
 
     builder.addMatcher(
-      api.endpoints.login.matchFulfilled,
+      userApi.endpoints.login.matchFulfilled,
       (state, { payload }) => {
         state.user = payload.user
       },
     )
 
     builder.addMatcher(
-      api.endpoints.logout.matchFulfilled,
+      userApi.endpoints.logout.matchFulfilled,
       (state) => {
         state.user = undefined
       }
     )
   },
 })
-
-// export const {  } = userSlice.actions
-
 export default userSlice.reducer

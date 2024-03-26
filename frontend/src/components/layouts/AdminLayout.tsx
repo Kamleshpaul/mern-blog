@@ -1,7 +1,7 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import Header from '@/components/admin/Header'
 import Sidebar from "@/components/admin/Sidebar";
-import { useAuthUserQuery } from "@/redux/api";
+import { useAuthUserQuery } from "@/redux/apis/userApi";
 import { useEffect } from "react";
 
 export default function AdminLayout() {
