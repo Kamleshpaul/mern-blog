@@ -7,12 +7,16 @@ import { isServerError } from "@/lib/utils";
 import { toast } from "../ui/use-toast";
 import { ServerError } from "@/types/errors";
 import { useLogoutMutation } from "@/redux/apis/userApi";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 export default function Header() {
 
   const navigate = useNavigate();
 
   const [logout] = useLogoutMutation();
+
+  const user = useSelector((state: RootState) => state.user.data)
 
   const handleLogout = async () => {
     try {
@@ -31,6 +35,7 @@ export default function Header() {
       }
     }
   }
+
   return (
     <header className="flex items-center h-16 px-4 border-b">
 
@@ -51,13 +56,13 @@ export default function Header() {
 
             <Avatar className="w-9 h-9">
               <AvatarImage alt="User Avatar" src="/placeholder-avatar.jpg" />
-              <AvatarFallback>UA</AvatarFallback>
+              <AvatarFallback>{user?.name?.split(' ').map(x => x.charAt(0))}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent className="bg-white" align="end">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Settings</DropdownMenuItem>
           <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>

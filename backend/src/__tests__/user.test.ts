@@ -118,7 +118,7 @@ describe('user create api', () => {
       .set('Cookie', cookie)
       .expect(200)
       .then((data) => {
-        expect(Object.keys(data.body.data).length).toBe(5)
+        expect(Object.keys(data.body.data).length).toBe(6)
         done()
       })
   })
@@ -137,5 +137,57 @@ describe('user create api', () => {
       })
   })
 
+
+
+  it('should register as normal user', (done) => {
+    const name = faker.person.firstName();
+    const email = faker.internet.email();
+    const password = faker.internet.password();
+
+    request(app)
+      .post('/api/auth/register')
+      .send({
+        name: name,
+        email: email,
+        password: password
+      })
+      .expect(201)
+      .then((data) => {
+
+        userId = data.body.data._id
+        expect(data.body.message).toBe('Register Successfully.')
+        expect(data.body).toHaveProperty('status')
+        expect(data.body).toHaveProperty('data')
+        expect(data.body).toHaveProperty('message')
+        expect(data.body).toHaveProperty('data.name', name)
+        expect(data.body).toHaveProperty('data.email', email.toLocaleLowerCase())
+        expect(data.body).toHaveProperty('data.role', "user")
+        expect(data.body).toHaveProperty('data.password')
+        expect(data.body.data.password).not.toBe(password)
+
+        done()
+      })
+  })
+
+  it('should return 422 validation error', (done) => {
+    const name = faker.person.firstName();
+    const email = 'test@mail.com';
+    const password = faker.internet.password();
+
+    request(app)
+      .post('/api/auth/register')
+      .send({
+        name,
+        email,
+        password
+      })
+      .expect(400)
+      .then((data) => {
+        expect(data.body.message).toBe('User Already Exist')
+        expect(data.body).toHaveProperty('status')
+        expect(data.body).toHaveProperty('status', false)
+        done()
+      })
+  })
 
 })

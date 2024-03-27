@@ -17,7 +17,7 @@ export default function Login() {
   const navigate = useNavigate();
   const { toast } = useToast()
 
-  const [login] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
 
   const {
     register,
@@ -88,7 +88,7 @@ export default function Login() {
                 {errors.password && <span className="text-red-500">{errors.password.message}</span>}
               </div>
 
-              <Button className="w-full" type="submit">
+              <Button className="w-full" type="submit" loading={isLoading}>
                 Login
               </Button>
 

@@ -15,6 +15,10 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: [true, "password is required."],
+  },
+  role: {
+    type: String,
+    enum: ['admin', 'user'],
   }
 });
 
@@ -23,6 +27,10 @@ userSchema.pre<IUser & Document>('save', async function (next) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(this.password, salt);
     this.password = hashedPassword;
+  }
+
+  if (!this.isModified('role')) {
+    this.role = "user";
   }
   next();
 });

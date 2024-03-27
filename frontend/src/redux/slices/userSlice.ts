@@ -2,15 +2,17 @@ import { createSlice } from '@reduxjs/toolkit'
 import { userApi } from '../apis/userApi'
 
 export interface userState {
-  user?: {
+  data?: {
+    _id: string,
     name: string,
-    email: string
+    email: string,
+    role: string
   },
   token?: string
 }
 
 const initialState: userState = {
-  user: undefined,
+  data: undefined,
 }
 
 export const userSlice = createSlice({
@@ -22,14 +24,22 @@ export const userSlice = createSlice({
     builder.addMatcher(
       userApi.endpoints.login.matchFulfilled,
       (state, { payload }) => {
-        state.user = payload.user
+        state.data = payload.user
       },
     )
 
     builder.addMatcher(
+      userApi.endpoints.authUser.matchFulfilled,
+      (state, { payload }) => {
+        state.data = payload.data
+      }
+    )
+
+
+    builder.addMatcher(
       userApi.endpoints.logout.matchFulfilled,
       (state) => {
-        state.user = undefined
+        state.data = undefined
       }
     )
   },

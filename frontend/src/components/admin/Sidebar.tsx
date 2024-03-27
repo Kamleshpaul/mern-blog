@@ -50,8 +50,8 @@ export default function Sidebar() {
     <>
       <Sheet open={open} onOpenChange={(state) => setOpen(state)}>
 
-        <SheetTrigger className="absolute top-3 md:hidden left-3">
-          <HamburgerMenuIcon className="w-8 h-8" onClick={() => setOpen(true)} />
+        <SheetTrigger className="absolute top-5 md:hidden left-5">
+          <HamburgerMenuIcon className="w-5 h-5" onClick={() => setOpen(true)} />
         </SheetTrigger>
         <SheetContent side={'left'} className="w-[70%]">
           <nav className="py-6">

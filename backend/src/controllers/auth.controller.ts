@@ -5,7 +5,33 @@ import bcrypt from 'bcrypt'
 import { User } from "#/models/user.model";
 import jwt from "jsonwebtoken";
 import { IRequest } from "#/types/app.type";
+import { IRegisterPayload } from "#/validators/register.validator";
 
+export const register = TryCatch(async (req: Request<{}, {}, IRegisterPayload>, res: Response) => {
+
+  const { name, email, password } = req.body;
+  const userExist = await User.findOne({ email });
+
+  if (userExist) {
+    return res.status(400).json({
+      status: false,
+      message: "User Already Exist"
+    })
+  }
+
+  const user = await User.create({
+    name,
+    email,
+    password
+  })
+
+  return res.status(201).json({
+    data: user,
+    status: true,
+    message: "Register Successfully."
+  })
+
+})
 export const login = TryCatch(async (req: Request<{}, {}, IloginPayload>, res: Response) => {
 
   const tokenExist = req.cookies[process.env.TOKEN_KEY]

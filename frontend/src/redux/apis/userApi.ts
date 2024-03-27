@@ -1,6 +1,7 @@
 import { ILoginPayload } from '@/validations/LoginValidator'
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { axiosBaseQuery } from './axiosBaseQuery'
+import { IRegisterPayload } from '@/validations/RegisterValidator'
 
 
 export const userApi = createApi({
@@ -11,10 +12,17 @@ export const userApi = createApi({
   tagTypes: ['User'],
   endpoints: (builder) => ({
 
-
     authUser: builder.query({
       query: () => ({ url: '/auth/me' }),
       providesTags: ['User']
+    }),
+
+    register: builder.mutation({
+      query: (data: IRegisterPayload) => ({
+        url: "/auth/register",
+        method: "post",
+        data
+      })
     }),
 
     login: builder.mutation({
@@ -25,7 +33,6 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
-
 
     logout: builder.mutation({
       query: () => ({
@@ -42,5 +49,6 @@ export const userApi = createApi({
 export const {
   useLoginMutation,
   useAuthUserQuery,
-  useLogoutMutation
+  useLogoutMutation,
+  useRegisterMutation
 } = userApi
